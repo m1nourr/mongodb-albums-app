@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Albums App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Music Albums</h1>
+    <p>Albums fetched from MongoDB API</p>
+
+    <table id="albumsTable">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Artist</th>
+          <th>Year</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    async function fetchAlbums() {
+      try {
+        const response = await fetch("/api/albums");
+        const albums = await response.json();
+
+        const tableBody = document.querySelector("#albumsTable tbody");
+        tableBody.innerHTML = "";
+
+        albums.forEach((album) => {
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td>${album.title}</td>
+            <td>${album.artistName}</td>
+            <td>${album.year}</td>
+          `;
+
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Error fetching albums:", error);
+      }
+    }
+
+    fetchAlbums();
+  </script>
+</body>
+</html>
